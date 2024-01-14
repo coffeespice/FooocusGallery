@@ -20,6 +20,7 @@ const mainFormData = {
 
 function to_clipboard(txt) {
     txt = decodeURIComponent(txt);
-    navigator.clipboard.writeText(txt);
-    alert('Copied to Clipboard!\nPaste to prompt area to load parameters.\nCurrent clipboard content is:\n\n' + txt);
+    navigator.clipboard.writeText(txt)
+        .then(() => alert('Copied to Clipboard!\nPaste to prompt area to load parameters.\nCurrent clipboard content is:\n\n' + txt))
+        .catch(() => alert('Not possible to copy, if using remote server HTTPS is needed'));
 }

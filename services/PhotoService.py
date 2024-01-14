@@ -39,5 +39,5 @@ def search(prompts, begin, end):
     [photos, _] = list_all_photos()
     metadatas = list_metadatas()
     dtos = make_photo_dtos(photos, metadatas)
-    filtered = [dto for dto in dtos if any(p in (dto.get('prompt') or '') for p in prompts)]
+    filtered = [dto for dto in dtos if any(p in (dto.get('prompt') or '').lower() for p in prompts)]
     return filtered[begin:end]
