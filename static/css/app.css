@@ -1,0 +1,67 @@
+body {
+    background-color: black;
+    min-height: 100%;
+}
+
+.gallery {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-auto-flow: row;
+    padding-bottom: 20rem;
+}
+
+.gallery img {
+    width: 100%;
+}
+
+.controls {
+    width: 100%;
+    position: fixed;
+    bottom: 1rem;
+    display: flex;
+    align-content: center;
+    justify-content: center;
+    gap: 1rem;
+}
+
+.controls > div {
+    display: flex;
+    align-content: center;
+    justify-content: center;
+    gap: 1rem;
+    padding: 1rem;
+    background-color: black;
+    border-radius: 1rem;
+}
+
+.controls button, .controls input, .controls select {
+    margin: 0;
+}
+
+.controls button {
+    width: 56px;
+}
+
+.search {
+    width: 100%;
+    padding: 2rem 10vw 0;
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+}
+
+.search button {
+    width: 56px;
+}
+
+.loading {
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    z-index: 666;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.6);
+}

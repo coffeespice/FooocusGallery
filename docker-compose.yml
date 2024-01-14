@@ -1,0 +1,10 @@
+version: "3"
+
+services:
+    fooocus_gallery:
+        image: coffeespice/fooocus_gallery:latest
+        ports:
+            - "8080:8080"
+        environment:
+            - outputs_directory= ""
+ 

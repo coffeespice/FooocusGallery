@@ -1,0 +1,92 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fooocus Gallery</title>
+</head>
+<body x-data="mainFormData">
+
+<aside class="loading" x-show="busy">
+    <span :aria-busy="busy"> If the logs are being indexed it may take a longer time</span>
+</aside>
+
+<aside class="search">
+    <input type="search" placeholder="Search prompts" x-model="prompt" @keyup.enter="loadPhotos(page = 0)"
+           data-tooltip="Separate prompts with comma"/>
+    <button type="button" @click="loadPhotos(page = 0)"><i class="gg-search" style="margin: auto;"></i></button>
+</aside>
+
+<main id="gallery" class="gallery" x-init="loadPhotos(page)" :style="`grid-template-columns: repeat(${columns}, 1fr)`;">
+    <template x-for="photo in photos">
+        <figure>
+            <a :href="photo.src"
+               :data-pswp-width="photo.resolution?.at(0) ?? 512"
+               :data-pswp-height="photo.resolution?.at(1) ?? 512"
+               :data-pswp-click="photo.click"
+               target="_blank"><img :src="photo.src" :alt="photo.src"></a>
+        </figure>
+    </template>
+</main>
+<div class="controls">
+    <div>
+        <button type="button" @click="loadPhotos(--page)">
+            <i class="gg-arrow-left" style="margin: auto;"></i>
+        </button>
+
+        <input type="number" x-model="page" @keyup.enter="loadPhotos(page)" data-tooltip="Press 'Enter' to apply">
+
+        <button type="button" @click="loadPhotos(++page)">
+            <i class="gg-arrow-right" style="margin: auto;"></i>
+        </button>
+
+        <select x-model="columns">
+            <option value="1">1 Cols</option>
+            <option value="2">2 Cols</option>
+            <option value="3">3 Cols</option>
+            <option value="4">4 Cols</option>
+            <option value="5">5 Cols</option>
+            <option value="6">6 Cols</option>
+        </select>
+    </div>
+</div>
+
+</body>
+
+<link rel="stylesheet" href="/static/css/pico.classless.min.css">
+<link rel="stylesheet" href="/static/css/photoswipe.css">
+<link rel="stylesheet" href="/static/css/css-gg.css">
+<link rel="stylesheet" href="/static/css/app.css">
+<script src="/static/js/app.js"></script>
+<script src="/static/js/alpine.min.js"></script>
+
+<script type="module">
+    import PhotoSwipeLightbox from '/static/js/photoswipe-lightbox.esm.min.js';
+    import PhotoSwipe from '/static/js/photoswipe.esm.min.js';
+
+    const lightbox = new PhotoSwipeLightbox({
+        gallery: '#gallery',
+        children: 'a',
+        pswpModule: () => PhotoSwipe,
+        wheelToZoom: true,
+        preload: [1, 4]
+    });
+
+    lightbox.on('uiRegister', function () {
+        lightbox.pswp.ui.registerElement({
+            name: 'copy-gen',
+            ariaLabel: 'Copy image generation settings',
+            order: 9,
+            isButton: true,
+            html: '<i class="gg-copy" style="margin: auto;"></i>',
+            onClick: () => {
+                const click = lightbox.pswp.currSlide.data.element.dataset.pswpClick;
+                if (!click) return alert('Incompatible log');
+                eval(click);
+            }
+        });
+    });
+
+    lightbox.init();
+</script>
+
+</html>
