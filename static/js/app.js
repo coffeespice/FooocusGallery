@@ -20,7 +20,21 @@ const mainFormData = {
 
 function to_clipboard(txt) {
     txt = decodeURIComponent(txt);
-    navigator.clipboard.writeText(txt)
-        .then(() => alert('Copied to Clipboard!\nPaste to prompt area to load parameters.\nCurrent clipboard content is:\n\n' + txt))
-        .catch(() => alert('Not possible to copy, if using remote server HTTPS is needed'));
+    if (navigator.clipboard && navigator.permissions) {
+        navigator.clipboard.writeText(txt)
+    } else {
+        const textArea = document.createElement('textArea')
+        textArea.value = txt
+        textArea.style.width = 0
+        textArea.style.position = 'fixed'
+        textArea.style.left = '-999px'
+        textArea.style.top = '10px'
+        textArea.setAttribute('readonly', 'readonly')
+        document.body.appendChild(textArea)
+
+        textArea.select()
+        document.execCommand('copy')
+        document.body.removeChild(textArea)
+    }
+    alert('Copied to Clipboard!\nPaste to prompt area to load parameters.\nCurrent clipboard content is:\n\n' + txt);
 }
