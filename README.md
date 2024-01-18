@@ -8,7 +8,7 @@ Fooocus Gallery is a project designed to simplify the process of navigating thro
 - **Fooocus Logs Based:** All the data and images are extracted directory from Fooocus Outputs directory
 - **Prompt Search:** Filter generated images by prompts
 - **Fast... Enough:** Fooocus Gallery was tested with 17k+ images, running smooth after the logs index
-- **Re-Index:** changes on log.html are detected an re-indexed time to time
+- **Re-Index:** changes on log.html are detected and re-indexed time to time
 - **Docker Image:** coffeespice/fooocus_gallery
 
 ## How to run
