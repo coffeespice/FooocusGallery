@@ -2,3 +2,4 @@ config.json
 .fleet
 *.pyc
 *.db
+testes

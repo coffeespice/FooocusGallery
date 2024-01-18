@@ -22,6 +22,7 @@ def list_metadatas(directories=None):
 
     with concurrent.futures.ThreadPoolExecutor() as executor:
         paths = [os.path.join(outputs_directory(), directory, 'log.html') for directory in directories]
+        paths = [path for path in paths if os.path.exists(path)]
         results = executor.map(get_metadata, paths)
 
         for metadata in results:
