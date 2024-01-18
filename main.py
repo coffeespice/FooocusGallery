@@ -1,9 +1,11 @@
 import cherrypy
 import os
 import json
-import asyncio
 from services.PhotoService import list_photos, list_metadatas, search
 from services.ConfigService import load_env, outputs_directory
+from apscheduler.schedulers.background import BackgroundScheduler
+from watchdog.observers import Observer
+from services.PhotoWatcherService import PhotoWatcherService
 
 
 class Root(object):
@@ -51,6 +53,14 @@ if __name__ == '__main__':
             'tools.staticdir.dir': outputs_directory(),
         }
     }
+
+    scheduler = BackgroundScheduler()
+    scheduler.add_job(list_metadatas, 'interval', minutes=1, max_instances=1)
+    scheduler.start()
+
+    observer = Observer()
+    observer.schedule(PhotoWatcherService(), path=outputs_directory(), recursive=True)
+    observer.start()
 
     cherrypy.server.socket_host = '0.0.0.0'
     cherrypy.quickstart(Root(), '/', conf)

@@ -1,6 +1,6 @@
 import os
 import concurrent.futures
-from facades.PhotoServiceFacade import get_html_file, parse_metadata, list_all_photos, make_photo_dtos
+from facades.PhotoServiceFacade import get_metadata, list_all_photos, make_photo_dtos, cache_metadata
 from services.ConfigService import outputs_directory
 
 
@@ -18,19 +18,14 @@ def list_photos(begin, end):
 
 def list_metadatas(directories=None):
     directories = directories or os.listdir(outputs_directory())
-    html_files = []
     metadatas = {}
 
     with concurrent.futures.ThreadPoolExecutor() as executor:
         paths = [os.path.join(outputs_directory(), directory, 'log.html') for directory in directories]
-        results = executor.map(get_html_file, paths)
+        results = executor.map(get_metadata, paths)
 
-        for html_file in results:
-            if html_file is not None:
-                html_files.append(html_file)
-
-    for html_file in html_files:
-        metadatas.update(parse_metadata(html_file))
+        for metadata in results:
+            metadatas.update(metadata)
 
     return metadatas
 

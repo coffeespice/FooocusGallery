@@ -1,11 +1,15 @@
 import os
 from functools import lru_cache
+
 from bs4 import BeautifulSoup
 from lxml import html
 from services.ConfigService import outputs_directory
+from cachetools import cached, LRUCache
+
+cache_metadata = LRUCache(1024)
+cache_photos = LRUCache(1024)
 
 
-@lru_cache(maxsize=69)
 def get_html_file(path):
     try:
         with open(path, 'r') as file:
@@ -15,7 +19,6 @@ def get_html_file(path):
         print('')
 
 
-@lru_cache(maxsize=69)
 def parse_metadata(html_file):
     datas = {}
     for div in html_file.xpath('//div[@class="image-container"]'):
@@ -42,7 +45,13 @@ def parse_metadata(html_file):
     return datas
 
 
-@lru_cache(maxsize=69)
+@cached(cache_metadata)
+def get_metadata(path):
+    html_file = get_html_file(path)
+    return parse_metadata(html_file)
+
+
+@cached(cache_photos)
 def list_all_photos():
     photos = []
     outputs = []
