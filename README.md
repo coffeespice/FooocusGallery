@@ -20,6 +20,5 @@ outputs and then run pip install --no-cache-dir -r requirements.txt and python m
 
 ## Alternatives
 
-[Fooocus Gallery by mattmarkwick](https://github.com/mattmarkwick/fooocus-gallery)
-
-[Fooocus Log Viewer by toutjavascript](https://github.com/toutjavascript/Fooocus-Log-Viewer)
+- [Fooocus Gallery by mattmarkwick](https://github.com/mattmarkwick/fooocus-gallery)
+- [Fooocus Log Viewer by toutjavascript](https://github.com/toutjavascript/Fooocus-Log-Viewer)
