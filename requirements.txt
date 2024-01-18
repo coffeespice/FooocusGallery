@@ -2,3 +2,6 @@ cherrypy==18.9.0
 beautifulsoup4~=4.12.2
 lxml~=5.1.0
 aiofiles~=23.2.1
+cachetools~=5.3.2
+APScheduler~=3.10.4
+watchdog~=3.0.0
