@@ -4,6 +4,7 @@ from facades.PhotoServiceFacade import cache_metadata, cache_photos
 
 
 def clear_cache(event):
+    cache_photos.clear()
     if 'log.html' not in event.src_path:
         return
 
@@ -13,7 +14,6 @@ def clear_cache(event):
         return
 
     cache_metadata.pop(key)
-    cache_photos.clear()
 
 
 class PhotoWatcherService(FileSystemEventHandler):
