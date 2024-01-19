@@ -17,3 +17,7 @@ def load_env():
 
 def outputs_directory():
     return os.environ.get('outputs_directory')
+
+
+def fooocus_ip():
+    return os.environ.get('fooocus_ip')

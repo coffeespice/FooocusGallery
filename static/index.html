@@ -12,7 +12,7 @@
 
 <aside class="search">
     <input type="search" placeholder="Search prompts" x-model="prompt" @keyup.enter="loadPhotos(page = 0)"
-           data-tooltip="Separate prompts with comma"/>
+           data-tooltip="Separate prompts with comma" data-placement="bottom"/>
     <button type="button" @click="loadPhotos(page = 0)"><i class="gg-search" style="margin: auto;"></i></button>
 </aside>
 
@@ -81,6 +81,22 @@
             onClick: () => {
                 const click = lightbox.pswp.currSlide.data.element.dataset.pswpClick;
                 if (!click) return alert('Incompatible log');
+                eval(click);
+            }
+        });
+    });
+
+    lightbox.on('uiRegister', function () {
+        lightbox.pswp.ui.registerElement({
+            name: 'copy-gen',
+            ariaLabel: 'Regenarte image using same parameters',
+            order: 9,
+            isButton: true,
+            html: '<i class="gg-repeat" style="margin: auto;"></i>',
+            onClick: () => {
+                let click = lightbox.pswp.currSlide.data.element.dataset.pswpClick;
+                if (!click) return alert('Incompatible log');
+                click = click.replace('to_clipboard', 'regenerate');
                 eval(click);
             }
         });

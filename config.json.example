@@ -1,3 +1,4 @@
 {
-    "outputs_directory": "\\path\\to\\fooocus\\outputs"
+    "outputs_directory": "\\path\\to\\fooocus\\outputs",
+    "fooocus_ip": "127.0.0.1:7865"
 }

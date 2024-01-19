@@ -8,6 +8,16 @@ async function searchPhotos(prompt, page) {
     return await response.json();
 }
 
+async function regeneratePhoto(prompt) {
+    const options = {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: prompt
+    }
+    const response = await fetch(`/regenerate`, options);
+    return await response.json();
+}
+
 const mainFormData = {
     photos: [], page: 0, columns: 4, prompt: '', busy: false,
     async loadPhotos(page) {
@@ -37,4 +47,10 @@ function to_clipboard(txt) {
         document.body.removeChild(textArea)
     }
     alert('Copied to Clipboard!\nPaste to prompt area to load parameters.\nCurrent clipboard content is:\n\n' + txt);
+}
+
+function regenerate(txt) {
+    const prompt = decodeURIComponent(txt);
+    regeneratePhoto(prompt).then(() => alert('Regeneration finished.')).catch(() => alert('Failed to regenerate'));
+    alert('Regeneration sent to queue');
 }
