@@ -9,14 +9,15 @@ from facades.PageFacade import get_pages_info, get_pagination
 def list_photos(begin, end):
     [photos, outputs] = list_all_photos()
     paginated = photos[begin:end]
+    pages_info = get_pages_info(photos)
 
     if paginated.__len__() == 0:
-        return []
+        return [[], pages_info]
 
     outputs = list(set(outputs[begin:end]))
     metadatas = list_metadatas(outputs)
     dtos = make_photo_dtos(paginated, metadatas)
-    return [dtos, get_pages_info(photos)]
+    return [dtos, pages_info]
 
 
 def list_metadatas(directories=None):
