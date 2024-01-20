@@ -40,7 +40,7 @@ async def send32():
 
 
 async def send33(prompt):
-    data = [False, 1.5, 0.8, 0.3, 7, prompt.get('Sampler'), prompt.get('Scheduler'),
+    data = [True, 1.5, 0.8, 0.3, 7, prompt.get('Sampler'), prompt.get('Scheduler'),
             False, -1, -1, -1,
             -1, -1, -1, False, False, False, False, 0.25, 64, 128, "joint", False, 1.01,
             1.02, 0.99, 0.95, False, False, "v2.6", 1, 0.618, False, False, 0]
@@ -71,10 +71,10 @@ async def send34(prompt):
             1,
             "None",
             1,
-            False,
+            'base64_image' in prompt,
             "uov",
-            "Disabled",
-            None,
+            prompt.get("UpscaleVariant", "Disabled"),
+            prompt.get('base64_image'),
             [],
             None,
             "",
@@ -90,3 +90,10 @@ async def send34(prompt):
             None, 0.5, 0.6, "ImagePrompt", None, 0.5, 0.6, "ImagePrompt"]
 
     await execute_web_socket(data, 34)
+
+
+async def generate(prompt):
+    await send31()
+    await send32()
+    await send33(prompt)
+    await send34(prompt)

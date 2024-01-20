@@ -12,7 +12,7 @@
 
 <aside class="search">
     <input type="search" placeholder="Search prompts" x-model="prompt" @keyup.enter="loadPhotos(page = 0)"
-           data-tooltip="Separate prompts with comma" data-placement="bottom"/>
+           title="Separate prompts with comma"/>
     <button type="button" @click="loadPhotos(page = 0)"><i class="gg-search" style="margin: auto;"></i></button>
 </aside>
 
@@ -33,7 +33,7 @@
             <i class="gg-arrow-left" style="margin: auto;"></i>
         </button>
 
-        <input type="number" x-model="page" @keyup.enter="loadPhotos(page)" data-tooltip="Press 'Enter' to apply">
+        <input type="number" x-model="page" @keyup.enter="loadPhotos(page)" title="Press 'Enter' to apply">
 
         <button type="button" @click="loadPhotos(++page)">
             <i class="gg-arrow-right" style="margin: auto;"></i>
@@ -75,31 +75,101 @@
         lightbox.pswp.ui.registerElement({
             name: 'copy-gen',
             ariaLabel: 'Copy image generation settings',
+            title: 'Copy image generation settings',
             order: 9,
             isButton: true,
-            html: '<i class="gg-copy" style="margin: auto;"></i>',
+            html: '<i class="gg-clipboard" style="margin: auto;"></i>',
             onClick: () => {
+                console.log(lightbox.pswp.currSlide.data.src);
                 const click = lightbox.pswp.currSlide.data.element.dataset.pswpClick;
                 if (!click) return alert('Incompatible log');
                 eval(click);
             }
         });
-    });
 
-    lightbox.on('uiRegister', function () {
         lightbox.pswp.ui.registerElement({
-            name: 'copy-gen',
+            name: 'gen',
             ariaLabel: 'Regenarte image using same parameters',
+            title: 'Regenarte image using same parameters',
             order: 9,
             isButton: true,
             html: '<i class="gg-repeat" style="margin: auto;"></i>',
             onClick: () => {
                 let click = lightbox.pswp.currSlide.data.element.dataset.pswpClick;
                 if (!click) return alert('Incompatible log');
-                click = click.replace('to_clipboard', 'regenerate');
+                click = click.replace('to_clipboard', 'generate');
                 eval(click);
             }
         });
+
+        lightbox.pswp.ui.registerElement({
+            name: 'upscale',
+            ariaLabel: 'Upscale image 1.5x',
+            title: 'Upscale image 1.5x',
+            order: 9,
+            isButton: true,
+            html: '<i class="gg-chevron-up" style="margin: auto;"></i>',
+            onClick: () => {
+                let click = lightbox.pswp.currSlide.data.element.dataset.pswpClick;
+                if (!click) return alert('Incompatible log');
+                const image = lightbox.pswp.currSlide.data.src;
+                const action = "upscale_150"
+                click = click.replace('to_clipboard', 'vary_upscale').replace(')', `,"${image}","${action}")`);
+                eval(click);
+            }
+        });
+
+        lightbox.pswp.ui.registerElement({
+            name: 'upscale2',
+            ariaLabel: 'Upscale image 2x',
+            title: 'Upscale image 2x',
+            order: 9,
+            isButton: true,
+            html: '<i class="gg-chevron-double-up" style="margin: auto;"></i>',
+            onClick: () => {
+                let click = lightbox.pswp.currSlide.data.element.dataset.pswpClick;
+                if (!click) return alert('Incompatible log');
+                const image = lightbox.pswp.currSlide.data.src;
+                const action = "upscale_200"
+                click = click.replace('to_clipboard', 'vary_upscale').replace(')', `,"${image}","${action}")`);
+                eval(click);
+            }
+        });
+
+        lightbox.pswp.ui.registerElement({
+            name: 'vary',
+            ariaLabel: 'Vary image subtle',
+            title: 'Vary image subtle',
+            order: 9,
+            isButton: true,
+            html: '<i class="gg-play-track-next" style="margin: auto;"></i>',
+            onClick: () => {
+                let click = lightbox.pswp.currSlide.data.element.dataset.pswpClick;
+                if (!click) return alert('Incompatible log');
+                const image = lightbox.pswp.currSlide.data.src;
+                const action = "vary_subtle"
+                click = click.replace('to_clipboard', 'vary_upscale').replace(')', `,"${image}","${action}")`);
+                eval(click);
+            }
+        });
+
+        lightbox.pswp.ui.registerElement({
+            name: 'vary2',
+            ariaLabel: 'Vary image strongly',
+            title: 'Vary image strongly',
+            order: 9,
+            isButton: true,
+            html: '<i class="gg-play-forwards" style="margin: auto;"></i>',
+            onClick: () => {
+                let click = lightbox.pswp.currSlide.data.element.dataset.pswpClick;
+                if (!click) return alert('Incompatible log');
+                const image = lightbox.pswp.currSlide.data.src;
+                const action = "vary_strong"
+                click = click.replace('to_clipboard', 'vary_upscale').replace(')', `,"${image}","${action}")`);
+                eval(click);
+            }
+        });
+
     });
 
     lightbox.init();

@@ -18,6 +18,17 @@ async function regeneratePhoto(prompt) {
     return await response.json();
 }
 
+async function varyUpscalePhoto(prompt, photo_path, action) {
+    const options = {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({prompt: prompt, photo_path: photo_path})
+    }
+
+    const response = await fetch(`/${action}`, options);
+    return await response.json();
+}
+
 const mainFormData = {
     photos: [], page: 0, columns: 4, prompt: '', busy: false,
     async loadPhotos(page) {
@@ -49,8 +60,14 @@ function to_clipboard(txt) {
     alert('Copied to Clipboard!\nPaste to prompt area to load parameters.\nCurrent clipboard content is:\n\n' + txt);
 }
 
-function regenerate(txt) {
+function generate(txt) {
     const prompt = decodeURIComponent(txt);
-    regeneratePhoto(prompt).then(() => alert('Regeneration finished.')).catch(() => alert('Failed to regenerate'));
-    alert('Regeneration sent to queue');
+    regeneratePhoto(prompt).then(() => alert('Generation finished.')).catch(() => alert('Failed to Generation'));
+    alert('Generation queued');
+}
+
+function vary_upscale(txt, photo_path, action) {
+    const prompt = decodeURIComponent(txt);
+    varyUpscalePhoto(prompt, photo_path, action).then(() => alert('Generation finished.')).catch(() => alert('Failed to Generation'));
+    alert('Generation queued');
 }
