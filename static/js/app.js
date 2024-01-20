@@ -62,12 +62,12 @@ function to_clipboard(txt) {
 
 function generate(txt) {
     const prompt = decodeURIComponent(txt);
-    regeneratePhoto(prompt).then(() => alert('Generation finished.')).catch(() => alert('Failed to Generation'));
+    regeneratePhoto(prompt).then(() => alert('Generation finished.')).catch(() => alert('Failed to Generate'));
     alert('Generation queued');
 }
 
 function vary_upscale(txt, photo_path, action) {
     const prompt = decodeURIComponent(txt);
-    varyUpscalePhoto(prompt, photo_path, action).then(() => alert('Generation finished.')).catch(() => alert('Failed to Generation'));
+    varyUpscalePhoto(prompt, photo_path, action).then(() => alert('Generation finished.')).catch(() => alert('Failed to Generate'));
     alert('Generation queued');
 }
