@@ -36,7 +36,8 @@
         <div class="pagers">
             <input type="number" x-model="page" @keyup.enter="loadPhotos(page)" title="Press 'Enter' to apply">
             <input type="number" x-data="pagesInfoData" :value="pagesInfo?.pages" x-init="loadPagesInfo"
-                   title="Number of pages" disabled="disabled">
+                   title="Number of pages" readonly="true" @click="loadPhotos(page = pagesInfo?.pages)"
+                   style="cursor: pointer">
         </div>
 
         <button type="button" @click="loadPhotos(++page)">

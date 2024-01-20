@@ -27,7 +27,7 @@ class Root(object):
         [photos, _] = list_all_photos()
         page_size = 50
         photos_count = photos.__len__()
-        page_count = math.ceil(photos_count / page_size)
+        page_count = math.ceil(photos_count / page_size) - 1
 
         page_info = {
             "size": page_size,
