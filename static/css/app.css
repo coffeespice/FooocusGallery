@@ -35,7 +35,13 @@ body {
 }
 
 .controls button, .controls input, .controls select {
+    max-width: 10rem;
     margin: 0;
+}
+
+.pagers {
+    display: flex;
+    flex-flow: row;
 }
 
 .controls button {

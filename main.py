@@ -1,3 +1,5 @@
+import math
+
 import cherrypy
 import os
 import json
@@ -7,6 +9,8 @@ from apscheduler.schedulers.background import BackgroundScheduler
 from watchdog.observers import Observer
 from services.PhotoWatcherService import PhotoWatcherService
 from services.FooocusService import regenerate, vary_upscale
+import time
+from facades.PhotoServiceFacade import list_all_photos
 
 
 class Root(object):
@@ -17,6 +21,21 @@ class Root(object):
     @cherrypy.expose
     def public(self):
         return open('public')
+
+    @cherrypy.expose
+    def pages(self):
+        [photos, _] = list_all_photos()
+        page_size = 50
+        photos_count = photos.__len__()
+        page_count = math.ceil(photos_count / page_size)
+
+        page_info = {
+            "size": page_size,
+            "photos": photos_count,
+            "pages": page_count
+        }
+
+        return json.dumps(page_info)
 
     @cherrypy.expose
     def photos(self, page):
@@ -52,6 +71,7 @@ class Root(object):
     def vary_subtle(self):
         data = cherrypy.request.json
         data["prompt"] = json.loads(data.get('prompt'))
+        data["prompt"]["Seed"] = int(time.time())
         data["action"] = "Vary (Subtle)"
         vary_upscale(**data)
         return json.dumps([])
@@ -61,6 +81,7 @@ class Root(object):
     def vary_strong(self):
         data = cherrypy.request.json
         data["prompt"] = json.loads(data.get('prompt'))
+        data["prompt"]["Seed"] = int(time.time())
         data["action"] = "Vary (Strong)"
         vary_upscale(**data)
         return json.dumps([])

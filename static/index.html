@@ -33,7 +33,11 @@
             <i class="gg-arrow-left" style="margin: auto;"></i>
         </button>
 
-        <input type="number" x-model="page" @keyup.enter="loadPhotos(page)" title="Press 'Enter' to apply">
+        <div class="pagers">
+            <input type="number" x-model="page" @keyup.enter="loadPhotos(page)" title="Press 'Enter' to apply">
+            <input type="number" x-data="pagesInfoData" :value="pagesInfo?.pages" x-init="loadPagesInfo"
+                   title="Number of pages" disabled="disabled">
+        </div>
 
         <button type="button" @click="loadPhotos(++page)">
             <i class="gg-arrow-right" style="margin: auto;"></i>

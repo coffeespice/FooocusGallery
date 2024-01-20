@@ -1,6 +1,7 @@
-import os
 import concurrent.futures
-from facades.PhotoServiceFacade import get_metadata, list_all_photos, make_photo_dtos, cache_metadata
+import os
+
+from facades.PhotoServiceFacade import get_metadata, list_all_photos, make_photo_dtos
 from services.ConfigService import outputs_directory
 
 

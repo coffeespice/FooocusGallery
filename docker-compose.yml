@@ -2,6 +2,7 @@ version: "3"
 
 services:
     fooocus_gallery:
+        build: .
         image: coffeespice/fooocus_gallery:latest
         ports:
             - "8080:8080"

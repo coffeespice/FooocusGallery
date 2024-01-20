@@ -3,6 +3,11 @@ async function getPhotos(page = 1) {
     return await response.json();
 }
 
+async function getPagesInfo() {
+    const response = await fetch('/pages/');
+    return await response.json();
+}
+
 async function searchPhotos(prompt, page) {
     const response = await fetch(`/search?prompt=${prompt}&page=${page}`);
     return await response.json();
@@ -36,6 +41,13 @@ const mainFormData = {
         this.busy = true;
         this.photos = this.prompt ? await searchPhotos(this.prompt, page) : await getPhotos(page);
         this.busy = false;
+    }
+}
+
+const pagesInfoData = {
+    pagesInfo: {},
+    async loadPagesInfo() {
+        this.pagesInfo = await getPagesInfo()
     }
 }
 
