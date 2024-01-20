@@ -3,18 +3,20 @@ import os
 
 from facades.PhotoServiceFacade import get_metadata, list_all_photos, make_photo_dtos
 from services.ConfigService import outputs_directory
+from facades.PageFacade import get_pages_info, get_pagination
 
 
 def list_photos(begin, end):
     [photos, outputs] = list_all_photos()
-    photos = photos[begin:end]
+    paginated = photos[begin:end]
 
-    if photos.__len__() == 0:
+    if paginated.__len__() == 0:
         return []
 
     outputs = list(set(outputs[begin:end]))
     metadatas = list_metadatas(outputs)
-    return make_photo_dtos(photos, metadatas)
+    dtos = make_photo_dtos(paginated, metadatas)
+    return [dtos, get_pages_info(photos)]
 
 
 def list_metadatas(directories=None):
@@ -37,4 +39,4 @@ def search(prompts, begin, end):
     metadatas = list_metadatas()
     dtos = make_photo_dtos(photos, metadatas)
     filtered = [dto for dto in dtos if any(p in (dto.get('prompt') or '').lower() for p in prompts)]
-    return filtered[begin:end]
+    return [filtered[begin:end], get_pages_info(filtered)]

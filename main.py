@@ -10,7 +10,7 @@ from watchdog.observers import Observer
 from services.PhotoWatcherService import PhotoWatcherService
 from services.FooocusService import regenerate, vary_upscale
 import time
-from facades.PhotoServiceFacade import list_all_photos
+from facades.PageFacade import get_pagination
 
 
 class Root(object):
@@ -23,27 +23,10 @@ class Root(object):
         return open('public')
 
     @cherrypy.expose
-    def pages(self):
-        [photos, _] = list_all_photos()
-        page_size = 50
-        photos_count = photos.__len__()
-        page_count = math.ceil(photos_count / page_size) - 1
-
-        page_info = {
-            "size": page_size,
-            "photos": photos_count,
-            "pages": page_count
-        }
-
-        return json.dumps(page_info)
-
-    @cherrypy.expose
     def photos(self, page):
-        page_size = 50
-        begin = int(page) * page_size
-        end = begin + page_size
-        photos = list_photos(begin, end)
-        return json.dumps(photos)
+        [begin, end] = get_pagination(page)
+        [dtos, pages_info] = list_photos(begin, end)
+        return json.dumps({"photos": dtos, "pages_info": pages_info})
 
     @cherrypy.expose
     def metadatas(self, dirs=None):
@@ -52,12 +35,10 @@ class Root(object):
 
     @cherrypy.expose
     def search(self, page, prompt):
-        page_size = 50
-        begin = int(page) * page_size
-        end = begin + page_size
+        [begin, end] = get_pagination(page)
         prompts = prompt.lower().split(',')
-        dtos = search(prompts, begin, end)
-        return json.dumps(dtos)
+        [dtos, pages_info] = search(prompts, begin, end)
+        return json.dumps({"photos": dtos, "pages_info": pages_info})
 
     @cherrypy.expose
     @cherrypy.tools.json_in()

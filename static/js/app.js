@@ -3,11 +3,6 @@ async function getPhotos(page = 1) {
     return await response.json();
 }
 
-async function getPagesInfo() {
-    const response = await fetch('/pages/');
-    return await response.json();
-}
-
 async function searchPhotos(prompt, page) {
     const response = await fetch(`/search?prompt=${prompt}&page=${page}`);
     return await response.json();
@@ -35,19 +30,14 @@ async function varyUpscalePhoto(prompt, photo_path, action) {
 }
 
 const mainFormData = {
-    photos: [], page: 0, columns: 4, prompt: '', busy: false,
+    photos: [], page: 0, columns: 4, prompt: '', busy: false, pagesInfo: {},
     async loadPhotos(page) {
         document.body.scrollTop = 0;
         this.busy = true;
-        this.photos = this.prompt ? await searchPhotos(this.prompt, page) : await getPhotos(page);
+        const data = this.prompt ? await searchPhotos(this.prompt, page) : await getPhotos(page);
+        this.photos = data.photos;
+        this.pagesInfo = data.pages_info;
         this.busy = false;
-    }
-}
-
-const pagesInfoData = {
-    pagesInfo: {},
-    async loadPagesInfo() {
-        this.pagesInfo = await getPagesInfo()
     }
 }
 
