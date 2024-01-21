@@ -1,16 +1,16 @@
-import math
+import json
+import os
+import time
 
 import cherrypy
-import os
-import json
-from services.PhotoService import list_photos, list_metadatas, search
-from services.ConfigService import load_env, outputs_directory
 from apscheduler.schedulers.background import BackgroundScheduler
 from watchdog.observers import Observer
-from services.PhotoWatcherService import PhotoWatcherService
-from services.FooocusService import regenerate, vary_upscale
-import time
+
 from facades.PageFacade import get_pagination
+from services.ConfigService import load_env, outputs_directory
+from services.FooocusService import regenerate, vary_upscale
+from services.PhotoService import list_photos, list_metadatas, search
+from services.PhotoWatcherService import PhotoWatcherService
 
 
 class Root(object):
@@ -44,6 +44,7 @@ class Root(object):
     @cherrypy.tools.json_in()
     def regenerate(self):
         prompt = cherrypy.request.json
+        prompt["Seed"] = int(time.time())
         regenerate(prompt)
         return json.dumps([])
 

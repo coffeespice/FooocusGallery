@@ -1,9 +1,9 @@
 import concurrent.futures
 import os
 
+from facades.PageFacade import get_pages_info
 from facades.PhotoServiceFacade import get_metadata, list_all_photos, make_photo_dtos
 from services.ConfigService import outputs_directory
-from facades.PageFacade import get_pages_info, get_pagination
 
 
 def list_photos(begin, end):
