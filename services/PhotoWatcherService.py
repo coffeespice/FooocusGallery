@@ -1,4 +1,5 @@
 import cachetools.keys
+import re
 from watchdog.events import FileSystemEventHandler
 from facades.PhotoServiceFacade import cache_metadata, cache_photos
 
@@ -8,7 +9,8 @@ def clear_cache(event):
     if 'log.html' not in event.src_path:
         return
 
-    key = cachetools.keys.hashkey(event.src_path)
+    path = re.sub(r"(\.)?log\.html.*", "log.html", event.src_path)
+    key = cachetools.keys.hashkey(path)
 
     if cache_metadata.get(key) is None:
         return
