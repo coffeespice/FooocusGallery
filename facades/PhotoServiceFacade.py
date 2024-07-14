@@ -26,7 +26,7 @@ def parse_metadata(html_file):
         key = div.get('id')
 
         for tr in div.xpath('.//table[@class="metadata"]/tr'):
-            td_key = tr.xpath('.//td[@class="key"]')[0].text.lower()
+            td_key = tr.xpath('.//td[@class="key"] | .//td[@class="label"]')[0].text.lower()
             td_value = tr.xpath('.//td[@class="value"]')[0].text
 
             if td_key == 'resolution':
