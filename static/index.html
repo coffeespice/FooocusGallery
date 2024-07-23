@@ -1,68 +1,82 @@
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fooocus Gallery</title>
-</head>
-<body x-data="mainFormData">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Fooocus Gallery</title>
+    </head>
+    <body x-data="mainFormData">
 
-<aside class="loading" x-show="busy">
-    <span :aria-busy="busy"> If the logs are being indexed it may take a longer time</span>
-</aside>
+        <aside class="loading" x-show="busy">
+            <span :aria-busy="busy">If the logs are being indexed it may take a longer time</span>
+        </aside>
 
-<aside class="search">
-    <input type="search" placeholder="Search prompts" x-model="prompt" @keyup.enter="loadPhotos(page = 0)"
-           title="Separate prompts with comma"/>
-    <button type="button" @click="loadPhotos(page = 0)"><i class="gg-search" style="margin: auto;"></i></button>
-</aside>
+        <aside class="search">
+            <input type="search" placeholder="Search prompts" x-model="prompt" @keyup.enter="loadPhotos(page = 0)"
+                   title="Separate prompts with comma"/>
+            <button type="button" @click="loadPhotos(page = 0)"><i class="gg-search" style="margin: auto;"></i></button>
+        </aside>
 
-<main id="gallery" class="gallery" x-init="loadPhotos(page)" :style="`grid-template-columns: repeat(${columns}, 1fr)`;">
-    <template x-for="photo in photos">
-        <figure>
-            <a :href="photo.src"
-               :data-pswp-width="photo.resolution?.at(0) ?? 512"
-               :data-pswp-height="photo.resolution?.at(1) ?? 512"
-               :data-pswp-click="photo.click"
-               target="_blank"><img :src="photo.src" :alt="photo.src"></a>
-        </figure>
-    </template>
-</main>
-<div class="controls">
-    <div>
-        <button type="button" @click="loadPhotos(--page)">
-            <i class="gg-arrow-left" style="margin: auto;"></i>
-        </button>
+        <main id="gallery" class="gallery" x-init="loadPhotos(page)" :style="`grid-template-columns: repeat(${columns}, 1fr)`;">
+            <template x-for="photo in photos">
+                <figure>
+                    <a :href="photo.src"
+                       :data-pswp-width="photo.resolution?.at(0) ?? 512"
+                       :data-pswp-height="photo.resolution?.at(1) ?? 512"
+                       :data-pswp-click="photo.click"
+                       :data-prompt="photo.prompt"
+                       :data-styles="photo.styles"
+                       :data-base_model="photo['base model']"
+                       :data-refiner_model="photo['refiner model']"
+                       target="_blank"><img :src="photo.src" :alt="photo.prompt"></a>
+                </figure>
+            </template>
+        </main>
+        <div class="controls">
+            <div>
+                <button type="button" @click="loadPhotos(--page)">
+                    <i class="gg-arrow-left" style="margin: auto;"></i>
+                </button>
 
-        <div class="pagers">
-            <input type="number" x-model="page" @keyup.enter="loadPhotos(page)" title="Press 'Enter' to apply">
-            <input type="number" :value="pagesInfo?.pages"
-                   title="Number of pages" readonly="true" @click="loadPhotos(page = pagesInfo?.pages)"
-                   style="cursor: pointer">
+                <div class="pagers">
+                    <input type="number" x-model="page" @keyup.enter="loadPhotos(page)" title="Press 'Enter' to apply">
+                    <input type="number" :value="pagesInfo?.pages"
+                           title="Number of pages" readonly="true" @click="loadPhotos(page = pagesInfo?.pages)"
+                           style="cursor: pointer">
+                </div>
+
+                <button type="button" @click="loadPhotos(++page)">
+                    <i class="gg-arrow-right" style="margin: auto;"></i>
+                </button>
+
+                <select x-model="columns">
+                    <option value="1">1 Cols</option>
+                    <option value="2">2 Cols</option>
+                    <option value="3">3 Cols</option>
+                    <option value="4">4 Cols</option>
+                    <option value="5">5 Cols</option>
+                    <option value="6">6 Cols</option>
+                </select>
+            </div>
         </div>
 
-        <button type="button" @click="loadPhotos(++page)">
-            <i class="gg-arrow-right" style="margin: auto;"></i>
-        </button>
+        <dialog id="modal_prompt">
+            <article>
+                <h4>Prompt</h4>
+                <textarea aria-label="Prompt" rows="10" style="width: 450px; font-size: 12px;"></textarea>
+                <footer>
+                    <button onclick="document.querySelector('#modal_prompt').close()">Close</button>
+                </footer>
+            </article>
+        </dialog>
 
-        <select x-model="columns">
-            <option value="1">1 Cols</option>
-            <option value="2">2 Cols</option>
-            <option value="3">3 Cols</option>
-            <option value="4">4 Cols</option>
-            <option value="5">5 Cols</option>
-            <option value="6">6 Cols</option>
-        </select>
-    </div>
-</div>
+    </body>
 
-</body>
-
-<link rel="stylesheet" href="/static/css/pico.classless.min.css">
-<link rel="stylesheet" href="/static/css/photoswipe.css">
-<link rel="stylesheet" href="/static/css/css-gg.css">
-<link rel="stylesheet" href="/static/css/app.css">
-<script src="/static/js/app.js"></script>
-<script src="/static/js/alpine.min.js"></script>
-<script type="module" src="/static/js/photoswipe-setup.js"></script>
+    <link rel="stylesheet" href="/static/css/pico.classless.min.css">
+    <link rel="stylesheet" href="/static/css/photoswipe.css">
+    <link rel="stylesheet" href="/static/css/css-gg.css">
+    <link rel="stylesheet" href="/static/css/app.css">
+    <script src="/static/js/app.js"></script>
+    <script src="/static/js/alpine.min.js"></script>
+    <script type="module" src="/static/js/photoswipe-setup.js"></script>
 
 </html>

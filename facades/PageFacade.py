@@ -15,6 +15,9 @@ def get_pages_info(photos):
 
 
 def get_pagination(page=0):
+    if int(page) < 0:
+        page = 0
+
     begin = int(page) * page_size
     end = begin + page_size
     return [begin, end]

@@ -108,6 +108,31 @@ lightbox.on('uiRegister', function () {
         }
     });
 
+    lightbox.pswp.ui.registerElement({
+        name: 'custom-caption',
+        order: 10,
+        isButton: false,
+        appendTo: 'root',
+        onInit: (el, pswp) => {
+            lightbox.pswp.on('change', () => {
+                const data = lightbox.pswp.currSlide.data.element.dataset;
+                if (!data.prompt) {
+                    el.innerHTML = '';
+                    return;
+                }
+                
+                el.innerHTML = `
+                <figcaption>
+                        <h1>${data.prompt}</h1>
+                        <h2>${data.styles}</h2>
+                        <small>${data.base_model}</small>
+                        <small>${data.refiner_model}</small>
+                    </figcaption>
+`
+
+            });
+        }
+    });
 });
 
 lightbox.init();
